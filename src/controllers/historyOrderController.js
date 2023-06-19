@@ -8,10 +8,10 @@ class HistoryController{
     }
     async saveItem(req, res){
         const {item} = req.body
-        console.log(item.order)
+        // console.log(item.order)
         for (const item1 of item.order) {
             const modifyItem = await Product.findOne({"_id": item1.product._id})
-            console.log(modifyItem.countInStock - item1.count)
+            // console.log(modifyItem.countInStock - item1.count)
             await modifyItem.updateOne({"countInStock": modifyItem.countInStock - item1.count})
             // await Product.updateOne(modifyItem, {$set: {"countInStock": modifyItem.countInStock - item1.count}}, {upsert: true})
         }
