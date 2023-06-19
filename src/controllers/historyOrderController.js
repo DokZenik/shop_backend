@@ -13,7 +13,6 @@ class HistoryController{
             const modifyItem = await Product.findOne({"_id": item1.product._id})
             // console.log(modifyItem.countInStock - item1.count)
             await modifyItem.updateOne({"countInStock": modifyItem.countInStock - item1.count})
-            // await Product.updateOne(modifyItem, {$set: {"countInStock": modifyItem.countInStock - item1.count}}, {upsert: true})
         }
 
         const historyItem = new HistoryOrder(item)
