@@ -18,7 +18,7 @@ commRoute.get(
 commRoute.post(
     '/save',
     asyncHandler(async (req, res) => {
-        console.log(req.body)
+        // console.log(req.body)
         try {
             Comment.create(req.body)
 
