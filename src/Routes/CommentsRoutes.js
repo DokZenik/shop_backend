@@ -18,9 +18,13 @@ commRoute.get(
 commRoute.post(
     '/save',
     asyncHandler(async (req, res) => {
-        //console.log(req.body)
+        console.log(req.body)
         try {
             Comment.create(req.body)
+
+            const modifyItem = await Product.findOne({"_id": req.body.itemId})
+            await modifyItem.updateOne({"rating": modifyItem.rating + parseInt(req.body.rating), "numReviews": modifyItem.numReviews + 1})
+
             res.json({"responseStatus": "200"})
         }catch (e){
             res.json({"responseStatus": "500"})
