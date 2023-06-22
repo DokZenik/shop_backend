@@ -1,5 +1,5 @@
 import express from 'express';
-import multer from 'multer'
+import multer from 'multer';
 import asyncHandler from 'express-async-handler';
 import Product from '../Models/ProductModel.js';
 
@@ -15,55 +15,77 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// GET ALL PRODUCT
+// GET ALL PRODUCTS
 productRoute.get(
-  '/',
-  asyncHandler(async (req, res) => {
-    const products = await Product.find();
-    // console.log(products)
-    res.json(products);
-  })
+    '/',
+    asyncHandler(async (req, res) => {
+        const products = await Product.find();
+        res.json(products);
+    })
 );
 
 // GET SINGLE PRODUCT
 productRoute.get(
-  '/:id',
-  asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
-    if (product) {
-      res.json(product);
-    } else {
-      res.status(404);
-      throw new Error('Product not found');
-    }
-  }),
-    // UPDATE PRODUCT
-    productRoute.post(
-        '/:id/edit',
-        upload.single('image'),
-        asyncHandler(async (req, res) => {
-            const { id } = req.params;
-            const { name, description, cost } = req.body;
-
-            const updatedProduct = {
-                name: name,
-                description: description,
-                cost: cost,
-            };
-
-            if (req.file) {
-                updatedProduct.image = `/uploads/${req.file.filename}`; // Set the image path
-            }
-
-            const product = await Product.findByIdAndUpdate(id, updatedProduct, { new: true });
-
-            if (product) {
-                res.json(product);
-            } else {
-                res.status(404);
-                throw new Error('Product not found');
-            }
-        })
-    ),
+    '/:id',
+    asyncHandler(async (req, res) => {
+        const product = await Product.findById(req.params.id);
+        if (product) {
+            res.json(product);
+        } else {
+            res.status(404);
+            throw new Error('Product not found');
+        }
+    })
 );
+
+// ADD NEW PRODUCT
+productRoute.post(
+    '/',
+    upload.array('images', 4), // 'images' is the name of the file input field in the request form, and 4 is the maximum number of images allowed
+    asyncHandler(async (req, res) => {
+        const { name, description, price } = req.body;
+
+        const images = req.files.map((file) => `/uploads/${file.filename}`); // Set the image paths as an array
+
+        const newProduct = new Product({
+            name,
+            description,
+            price,
+            images,
+        });
+
+        const createdProduct = await newProduct.save();
+        res.status(201).json(createdProduct);
+    })
+);
+
+// UPDATE PRODUCT
+productRoute.post(
+    '/:id/edit',
+    upload.array('images', 4), // 'images' is the name of the file input field in the request form, and 4 is the maximum number of images allowed
+    asyncHandler(async (req, res) => {
+        const { id } = req.params;
+        const { name, description, price } = req.body;
+
+        const updatedProduct = {
+            name,
+            description,
+            price,
+        };
+
+        if (req.files && req.files.length > 0) {
+            updatedProduct.images = req.files.map((file) => `/uploads/${file.filename}`); // Set the image paths as an array
+        }
+
+        const product = await Product.findByIdAndUpdate(id, updatedProduct, { new: true });
+
+        if (product) {
+            res.json(product);
+        } else {
+            res.status(404);
+            throw new Error('Product not found');
+        }
+    })
+);
+
 export default productRoute;

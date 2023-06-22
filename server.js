@@ -13,8 +13,18 @@ import cartRoute from "./src/Routes/CartRoutes.js";
 import historyRoute from "./src/Routes/HistoryRoutes.js";
 import categoryRoute from "./src/Routes/CategoeyRoute.js";
 import subscribeRoute from "./src/Routes/SubscribeRoute.js";
+import multer from "multer";
 
 dotenv.config();
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Specify the directory to save the uploaded images
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+const upload = multer({ storage });
 connectDatabase();
 const app = express();
 // Get the current module file path
@@ -23,7 +33,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename)
 app.use(express.json());
 app.use(cors({origin: "*"}))
-
 
 // API
 app.use('/api/import', ImportData);
