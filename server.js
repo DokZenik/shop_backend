@@ -14,6 +14,7 @@ import historyRoute from "./src/Routes/HistoryRoutes.js";
 import categoryRoute from "./src/Routes/CategoeyRoute.js";
 import subscribeRoute from "./src/Routes/SubscribeRoute.js";
 import multer from "multer";
+import bannerRoute from "./src/Routes/BannersRoute.js";
 
 dotenv.config();
 const storage = multer.diskStorage({
@@ -44,6 +45,7 @@ app.use('/api/history', historyRoute)
 app.use('/api/categories', categoryRoute)
 app.use('/uploads', express.static(join(__dirname, 'uploads')))
 app.use('/api/subscribe', subscribeRoute);
+app.use('/api/banners', bannerRoute);
 // ERROR HANDLER
 app.use(notFound);
 app.use(errorHandler);
