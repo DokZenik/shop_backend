@@ -54,7 +54,7 @@ class authController {
         try {
             const email = req.params.email
             const user = await User.findOne({email})
-            res.status(200).json(user)
+            res.status(200).json({email: user.email, roles: user.roles, createdAt: user.createdAt, username: user.username})
         } catch (e) {
             res.status(400).json({message: "Smth was wrong"})
         }
