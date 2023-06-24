@@ -67,6 +67,9 @@ class authController {
 
         }
     }
+    async test(req, res) {
+        res.json({message: "TEST IS SUCCESSFUL"})
+    }
 }
 
 export default new authController();

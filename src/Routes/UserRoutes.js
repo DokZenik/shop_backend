@@ -9,5 +9,6 @@ authRouter.post('/registration', controller.registration)
 authRouter.post('/login', controller.login)
 authRouter.get('/users', authMiddleware, controller.testToken)
 authRouter.get('/user/:email', authMiddleware, controller.getUser)
+authRouter.get('/test', controller.test)
 
 export default authRouter;
