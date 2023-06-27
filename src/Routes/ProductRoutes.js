@@ -43,7 +43,7 @@ productRoute.post(
     '/',
     upload.array('images', 4), // 'images' is the name of the file input field in the request form, and 4 is the maximum number of images allowed
     asyncHandler(async (req, res) => {
-        const { name, description, price, category } = req.body;
+        const { name, description, price, category, countInStock } = req.body;
 
         const images = req.files.map((file) => `/uploads/${file.filename}`); // Set the image paths as an array
 
@@ -52,7 +52,8 @@ productRoute.post(
             description,
             price,
             images,
-            category
+            category,
+            countInStock
         });
 
         const createdProduct = await newProduct.save();
@@ -66,13 +67,14 @@ productRoute.post(
     upload.array('images', 4), // 'images' is the name of the file input field in the request form, and 4 is the maximum number of images allowed
     asyncHandler(async (req, res) => {
         const { id } = req.params;
-        const { name, description, price, category } = req.body;
+        const { name, description, price, category, countInStock } = req.body;
 
         const updatedProduct = {
             name,
             description,
             price,
-            category
+            category,
+            countInStock
         };
 
         if (req.files && req.files.length > 0) {
