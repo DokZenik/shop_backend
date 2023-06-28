@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import asyncHandler from 'express-async-handler';
-import BannerModel from '../models/BannerModel.js';
+import BannerModel from '../Models/BannerModel.js';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
