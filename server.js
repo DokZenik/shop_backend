@@ -17,15 +17,6 @@ import multer from "multer";
 import bannerRoute from "./src/Routes/BannersRoute.js";
 
 dotenv.config();
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Specify the directory to save the uploaded images
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    },
-});
-const upload = multer({ storage });
 connectDatabase();
 const app = express();
 // Get the current module file path
