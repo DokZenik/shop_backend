@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({ storage });
+const upload = multer({storage});
 
 // GET ALL PRODUCTS
 productRoute.get(
@@ -43,7 +43,7 @@ productRoute.post(
     '/',
     upload.array('images', 4), // 'images' is the name of the file input field in the request form, and 4 is the maximum number of images allowed
     asyncHandler(async (req, res) => {
-        const { name, description, price, category, countInStock } = req.body;
+        const {name, description, price, category, countInStock} = req.body;
 
         const images = req.files.map((file) => `/uploads/${file.filename}`); // Set the image paths as an array
 
@@ -66,8 +66,8 @@ productRoute.post(
     '/:id/edit',
     upload.array('images', 4), // 'images' is the name of the file input field in the request form, and 4 is the maximum number of images allowed
     asyncHandler(async (req, res) => {
-        const { id } = req.params;
-        const { name, description, price, category, countInStock } = req.body;
+        const {id} = req.params;
+        const {name, description, price, category, countInStock} = req.body;
 
         const updatedProduct = {
             name,
@@ -81,7 +81,7 @@ productRoute.post(
             updatedProduct.images = req.files.map((file) => `/uploads/${file.filename}`); // Set the image paths as an array
         }
 
-        const product = await Product.findByIdAndUpdate(id, updatedProduct, { new: true });
+        const product = await Product.findByIdAndUpdate(id, updatedProduct, {new: true});
 
         if (product) {
             res.json(product);
@@ -89,6 +89,21 @@ productRoute.post(
             res.status(404);
             throw new Error('Product not found');
         }
+    })
+);
+
+productRoute.delete(
+    '/delete/:id',
+    asyncHandler(async (req, res) => {
+        const product = await Product.deleteOne({_id: req.params.id});
+
+        if (product) {
+            res.json({message: "Item was successfully deleted"});
+        } else {
+            res.status(404);
+            throw new Error('Product not found');
+        }
+        // console.log(req.params.id)
     })
 );
 
