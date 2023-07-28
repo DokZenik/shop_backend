@@ -67,13 +67,13 @@ productRoute.post(
     upload.array('images', 4), // 'images' is the name of the file input field in the request form, and 4 is the maximum number of images allowed
     asyncHandler(async (req, res) => {
         const {id} = req.params;
-        const {name, description, price, category, countInStock} = req.body;
+        const {name, description, price, categories, countInStock} = req.body;
 
         const updatedProduct = {
             name,
             description,
             price,
-            category,
+            categories,
             countInStock
         };
 
