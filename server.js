@@ -42,6 +42,7 @@ app.use('/api/banners', bannerRoute);
 app.use('/api/static-banners', staticBannersRoute);
 app.use('/api/seller', sellerRoute);
 app.post("/api/change-password", authController.changePassword);
+
 // ERROR HANDLER
 app.use(notFound);
 app.use(errorHandler);
