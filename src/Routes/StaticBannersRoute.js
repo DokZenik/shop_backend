@@ -1,5 +1,17 @@
 import express from 'express';
+import multer from "multer";
+import BannerModel from "../Models/BannerModel.js";
 const staticBannersRoute = express.Router();
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/banners/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({ storage });
 
 //GET request to display static banners
 staticBannersRoute.get('/api/static-banners', async (req, res) => {
@@ -12,12 +24,12 @@ staticBannersRoute.get('/api/static-banners', async (req, res) => {
     }
 });
     // POST request to add a new static banner
-staticBannersRoute.post('/api/static-banners', async (req, res) => {
+staticBannersRoute.post('/api/static-banners', upload.single('image'), async (req, res) => {
     try {
         const { altText } = req.body;
-        const newStaticBanner = new StaticBannerModel({ imageUrl: req.file.path, altText });
-        await newStaticBanner.save();
-        res.json(newStaticBanner);
+        const imageUrl = req.file.path;
+        const banner = await BannerModel.create({ imageUrl, altText });
+        res.status(201).json(banner);
     } catch (err) {
         console.error('Error adding static banner:', err.message);
         res.status(500).json({ error: 'Internal Server Error' });
