@@ -28,8 +28,8 @@ staticBannersRoute.post('/api/static-banners', upload.single('image'), async (re
     try {
         const { altText } = req.body;
         const imageUrl = req.file.path;
-        const banner = await BannerModel.create({ imageUrl, altText });
-        res.status(201).json(banner);
+        const staticsBanners = await StaticBannerModel.create({ imageUrl, altText });
+        res.status(201).json(staticsBanners);
     } catch (err) {
         console.error('Error adding static banner:', err.message);
         res.status(500).json({ error: 'Internal Server Error' });
