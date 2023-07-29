@@ -60,6 +60,31 @@ class authController {
         }
     }
 
+    async changePassword(req, res) {
+        try {
+            const { currentPassword, newPassword } = req.body;
+            const userId = req.user.id; // Assuming you are using JWT authentication middleware to get the user id.
+
+            const user = await User.findById(userId);
+
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            if (!bcrypt.compareSync(currentPassword, user.password)) {
+                return res.status(401).json({ message: "Incorrect current password" });
+            }
+
+            const hashedNewPassword = bcrypt.hashSync(newPassword, 12);
+            user.password = hashedNewPassword;
+            await user.save();
+
+            return res.status(200).json({ message: "Password updated successfully" });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Failed to update password" });
+        }
+    }
     async testToken(req, res) {
         try {
             res.json("server works")

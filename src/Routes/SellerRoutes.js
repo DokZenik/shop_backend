@@ -59,7 +59,6 @@ sellerRoute.post(
             return res.status(400).json({message: "application wasn't declined"})
         }
 
-        //decline realisation
     })
 )
 export default sellerRoute

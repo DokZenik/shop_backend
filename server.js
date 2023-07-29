@@ -13,9 +13,10 @@ import cartRoute from "./src/Routes/CartRoutes.js";
 import historyRoute from "./src/Routes/HistoryRoutes.js";
 import categoryRoute from "./src/Routes/CategoeyRoute.js";
 import subscribeRoute from "./src/Routes/SubscribeRoute.js";
-import multer from "multer";
 import bannerRoute from "./src/Routes/BannersRoute.js";
 import sellerRoute from "./src/Routes/SellerRoutes.js";
+import staticBannersRoute from "./src/Routes/StaticBannersRoute.js";
+import authController from "./src/controllers/authController.js";
 
 dotenv.config();
 connectDatabase();
@@ -38,7 +39,9 @@ app.use('/api/categories', categoryRoute)
 app.use('/uploads', express.static(join(__dirname, 'uploads')))
 app.use('/api/subscribe', subscribeRoute);
 app.use('/api/banners', bannerRoute);
+app.use('/api/static-banners', staticBannersRoute);
 app.use('/api/seller', sellerRoute);
+app.post("/api/change-password", authController.changePassword);
 // ERROR HANDLER
 app.use(notFound);
 app.use(errorHandler);
