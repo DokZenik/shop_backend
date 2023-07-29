@@ -22,6 +22,10 @@ const productSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        ownerEmail: {
+            type: String,
+            required: true
+        },
         images: [{
             type: String,
         }],
