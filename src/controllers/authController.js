@@ -62,10 +62,8 @@ class authController {
 
     async changePassword(req, res) {
         try {
+            const user = await User.findOne({email})
             const { currentPassword, newPassword } = req.body;
-            const userId = req.user.id; // Assuming you are using JWT authentication middleware to get the user id.
-
-            const user = await User.findById(userId);
 
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
