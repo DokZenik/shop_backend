@@ -4,7 +4,7 @@ import BannerModel from "../Models/BannerModel.js";
 const staticBannersRoute = express.Router();
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/banners/');
+        cb(null, 'uploads/StaticBanners/');
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname);
