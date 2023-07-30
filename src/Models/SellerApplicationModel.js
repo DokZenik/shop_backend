@@ -19,7 +19,7 @@ const sellerApplicationSchema = mongoose.Schema({
         },
         websiteLink: {
             type: String,
-            required: true
+            // required: true
         },
         ico: {
             type: String,
