@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from "multer";
-import BannerModel from "../Models/BannerModel.js";
+import StaticBannerModel from "../Models/StaticBannersModel.js";
+
 const staticBannersRoute = express.Router();
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -14,7 +15,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 //GET request to display static banners
-staticBannersRoute.get('/api/static-banners', async (req, res) => {
+staticBannersRoute.get('/', async (req, res) => {
     try {
         const staticBanners = await StaticBannerModel.find({});
         res.json(staticBanners);
@@ -24,12 +25,12 @@ staticBannersRoute.get('/api/static-banners', async (req, res) => {
     }
 });
     // POST request to add a new static banner
-staticBannersRoute.post('/api/static-banners', upload.single('image'), async (req, res) => {
+staticBannersRoute.post('/', upload.single('image'), async (req, res) => {
     try {
         const { altText } = req.body;
         const imageUrl = req.file.path;
-        const staticsBanners = await StaticBannerModel.create({ imageUrl, altText });
-        res.status(201).json(staticsBanners);
+        const staticBanners = await StaticBannerModel.create({ imageUrl, altText });
+        res.status(201).json(staticBanners);
     } catch (err) {
         console.error('Error adding static banner:', err.message);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -37,10 +38,10 @@ staticBannersRoute.post('/api/static-banners', upload.single('image'), async (re
 });
 
 // DELETE request to delete a static banner
-staticBannersRoute.delete('/api/static-banners/:id', async (req, res) => {
+staticBannersRoute.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        await StaticBanner.findByIdAndDelete(id);
+        await StaticBannerModel.findByIdAndDelete(id);
         res.json({ message: 'Static banner deleted successfully' });
     } catch (err) {
         console.error('Error deleting static banner:', err.message);

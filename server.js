@@ -39,7 +39,7 @@ app.use('/api/categories', categoryRoute)
 app.use('/uploads', express.static(join(__dirname, 'uploads')))
 app.use('/api/subscribe', subscribeRoute);
 app.use('/api/banners', bannerRoute);
-app.use('/api/static-banners', staticBannersRoute);
+app.use('/api/staticBanners', staticBannersRoute);
 app.use('/api/seller', sellerRoute);
 app.post("/api/change-password", authController.changePassword);
 
